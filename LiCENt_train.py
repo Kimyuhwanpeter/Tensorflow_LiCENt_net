@@ -41,13 +41,13 @@ def tr_func(img_list, lab_list):
 
     img = tf.io.read_file(img_list)
     img = tf.image.decode_png(img, 3)
-    img = tf.image.resize(img, [FLAGS.img_size, FLAGS.img_size]) / 127.5  -1.
+    img = tf.image.resize(img, [FLAGS.img_size, FLAGS.img_size]) / 255
 
     # HSV, HSL ==> H is same
 
     lab = tf.io.read_file(lab_list)
     lab = tf.image.decode_png(lab, 3)
-    lab = tf.image.resize(lab, [FLAGS.img_size, FLAGS.img_size]) / 127.5  -1.
+    lab = tf.image.resize(lab, [FLAGS.img_size, FLAGS.img_size]) / 255
 
     return img, lab
 
@@ -55,7 +55,7 @@ def te_func(img_data):
 
     img = tf.io.read_file(img_data)
     img = tf.image.decode_png(img, 3)
-    img = tf.image.resize(img, [FLAGS.img_size, FLAGS.img_size]) / 127.5  -1.
+    img = tf.image.resize(img, [FLAGS.img_size, FLAGS.img_size]) / 255
 
     return img
 
@@ -176,8 +176,8 @@ def main():
                         final_image = tf.concat([H, output, S], -1).numpy()
                         rgb_final_image = cv2.cvtColor(final_image, cv2.COLOR_HLS2RGB)
                         rgb_final_image = np.array(rgb_final_image)
-                        plt.imsave(FLAGS.sample_images + "/{}_predict_{}.png".format(count, i), rgb_final_image * 0.5 + 0.5)
-                        plt.imsave(FLAGS.sample_images + "/{}_label_{}.png".format(count, i), batch_labels[i] * 0.5 + 0.5)
+                        plt.imsave(FLAGS.sample_images + "/{}_predict_{}.png".format(count, i), rgb_final_image)
+                        plt.imsave(FLAGS.sample_images + "/{}_label_{}.png".format(count, i), batch_labels[i])
 
                 count += 1
 
@@ -215,7 +215,7 @@ def main():
             final_image = tf.concat([H, output, S], -1).numpy()
             rgb_final_image = cv2.cvtColor(final_image, cv2.COLOR_HLS2RGB)
             rgb_final_image = np.array(rgb_final_image)
-            plt.imsave(FLAGS.test_images + "/{}".format(name), rgb_final_image * 0.5 + 0.5)
+            plt.imsave(FLAGS.test_images + "/{}".format(name), rgb_final_image)
 
 
 
